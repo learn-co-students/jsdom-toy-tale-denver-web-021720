@@ -2,6 +2,7 @@ const addBtn = document.querySelector("#new-toy-btn");
 const toyForm = document.querySelector(".container");
 const toyCollection = document.querySelector("#toy-collection");
 
+// render toys from db to page
 fetch('http://localhost:3000/toys')
 .then(response => response.json())
 .then(toys => renderToys(toys))
@@ -32,12 +33,40 @@ function renderSingleToy(toy) {
     const likeButton = document.createElement('button')
     likeButton.className = "like-btn"
     likeButton.innerText = "Like <3"
+    likeButton.id = toy.id
     toyDiv.appendChild(likeButton)
-    toyDiv.addEventListener('click', e => {
-      console.log(parseInt(e.target.previousSibling.innerText))
-    })
+    toyDiv.addEventListener('click', e => increaseLikesOnPage(e)) 
 };
 
+// render increase in likes 
+function increaseLikesOnPage(e) {
+  const oldLikes = parseInt(e.target.previousSibling.innerText)
+  const newLikes = oldLikes + 1
+  e.target.previousSibling.innerText = `${newLikes} likes`
+  updateToyLikes(e);
+}
+
+// save updated likes to db
+function updateToyLikes(e) {
+  const toyId = e.target.id
+
+  const formData = {
+    likes: parseInt(e.target.previousSibling.innerText)
+  };
+
+  const configObject = {
+    method: "PATCH", 
+    headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify(formData)
+  };
+
+  fetch(`http://localhost:3000/toys/${toyId}`, configObject)
+}
+
+// add new toy to page
 const addToyForm = document.querySelector('#add-toy-form');
 
 addToyForm.addEventListener('submit', e => {
@@ -66,12 +95,10 @@ addToyForm.addEventListener('submit', e => {
     .then(toy => renderSingleToy(toy))
 })
 
-
-
+// form hide & seek
 let addToy = false;
 
 addBtn.addEventListener("click", () => {
-  // hide & seek with the form
   addToy = !addToy;
   if (addToy) {
     toyForm.style.display = "block";
