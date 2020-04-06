@@ -12,4 +12,47 @@ document.addEventListener("DOMContentLoaded", () => {
       toyForm.style.display = "none";
     }
   });
+
+  fetch('http://localhost:3000/toys')
+    .then(response => response.json())
+    .then(toys => displayToys(toys))
+
+  function displayToys(toys){
+
+    toys.forEach(toy => {
+      console.log(toy)
+      const toyContainer = document.querySelector('#toy-collection')
+      const toyCard = document.createElement('div')
+      const name = document.createElement('h2')
+      const image = document.createElement('img')
+      const likes = document.createElement('p')
+      const likeButton = document.createElement('button')
+
+      toyCard.className = 'card'
+      name.innerText = toy.name
+      image.src = toy.image
+      image.className = 'toy-avatar'
+      likes.innerText = `${toy.likes} Likes`
+      likeButton.className = 'like-btn'
+      likeButton.innerText = 'Like <3'
+
+      toyCard.append(name,image,likes,likeButton)
+      toyContainer.appendChild(toyCard)
+    })
+  }
+
+  const addToyForm = document.querySelector('.add-toy-form')
+  addToyForm.addEventListener('submit', event => {
+    renderNewToy()
+    postNewToy()
+  })
+
+  function renderNewToy(){
+
+  }
+
+  function postNewToy(){
+
+  }
+  
 });
