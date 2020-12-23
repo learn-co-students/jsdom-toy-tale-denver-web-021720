@@ -1,3 +1,18 @@
+const baseURL = 'http://localhost:3000'
+const toysURL = `${baseURL}/toys`
+
+fetch(toysURL)
+  .then(parseJSON)
+  .then(toys => console.log(toys));
+
+// toy = {
+//   id: 1
+//   image: "http://www.pngmart.com/files/3/Toy-Story-Woody-PNG-Photos.png"
+//   likes: 5
+//   name: "Woody"
+// }
+
+// Provided code
 let addToy = false;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -13,3 +28,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+// Utility functions
+function parseJSON(response){
+  return response.json();
+}
