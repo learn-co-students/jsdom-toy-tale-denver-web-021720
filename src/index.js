@@ -30,7 +30,7 @@ fetch(toysURL)
     })
   })
 
-  // Provided code
+// Provided code
 let addToy = false;
 
 document.addEventListener("DOMContentLoaded", () => {
